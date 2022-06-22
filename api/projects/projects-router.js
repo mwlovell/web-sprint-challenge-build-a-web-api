@@ -31,24 +31,6 @@ router.get("/:id", validateProjectId, (req,res, next) => {
             res.status(400).json({message: "Error adding your project"})
         })
     });
-
-    router.put("/:id",validateProjectId ,validateProject,(req, res, next) =>{
-        const {name, description, completed} = req.body; 
-        if(!name || !description || !completed){
-            res.status(400).json({message: 'Error, ID is not found'})
-        } else {
-            Projects.update(req.params.id ,req.body)
-            .then(() => {
-              return Projects.get(req.params.id)
-            })
-            .then(project => {
-                res.json(project)
-            })
-            .catch(next)
-        }
-    
-    })
-    
     
     router.put("/:id",validateProjectId ,validateProject,(req, res, next) =>{
     
