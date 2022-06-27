@@ -2,6 +2,7 @@ const Projects = require('./projects-model');
 const express = require('express'); 
 const router = express.Router()
 
+const e = require('express');
 const {validateProjectId, validateProject} = require('./projects-middleware'); 
 
 router.get("/", (req, res) => {
@@ -52,6 +53,19 @@ router.get("/:id", validateProjectId, (req,res, next) => {
             next(err)
         }
     })
+    
+    router.get("/:id/actions", validateProjectId, async (req, res, next) => {
+        Projects.getProjectActions(req.params.id)
+            .then(actions => {
+                if(actions.length > 0){
+                    res.status(200).json(actions)
+                } else {
+                    res.status(404).json((actions))
+                }
+            })
+            .catch(next)
+    })
+    
     
     module.exports = router 
     
