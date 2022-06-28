@@ -35,6 +35,10 @@ router.get("/:id", validateProjectId, (req,res, next) => {
     
     router.put("/:id",validateProjectId ,validateProject,(req, res, next) =>{
     
+        const { completed, name, description} = req.body; 
+        if(completed === undefined || !name || !description){
+            res.status(400).json({message: 'Project ID does not exist'})
+        } else {
             Projects.update(req.params.id ,req.body)
             .then(() => {
               return Projects.get(req.params.id)
@@ -43,6 +47,9 @@ router.get("/:id", validateProjectId, (req,res, next) => {
                 res.json(project)
             })
             .catch(next)
+    
+        }
+    
     })
     
     router.delete("/:id", validateProjectId, async (req, res, next) => {
@@ -53,7 +60,7 @@ router.get("/:id", validateProjectId, (req,res, next) => {
             next(err)
         }
     })
-    
+
     router.get("/:id/actions", validateProjectId, async (req, res, next) => {
         Projects.getProjectActions(req.params.id)
             .then(actions => {

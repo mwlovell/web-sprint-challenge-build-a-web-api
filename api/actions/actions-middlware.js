@@ -20,15 +20,15 @@ async function validateAction (req, res, next){
     if(!project_id){
         res.status(400).json({message: 'Error, project id is missing'})
     }
-    if(!notes || !notes.trim){
-        res.status(400).json({message: 'Error, project notes are required'})
-    } else{
-        req.project_id = project_id
-        req.description = description.trim()
-        req.notes = notes.trim()
-        req.completed = completed
-        next()
+        else if(!notes || !notes.trim){
+            res.status(400).json({message: 'Error, missing required project notes'})
+        } else{
+            req.project_id = project_id
+            req.description = description.trim()
+            req.notes = notes.trim()
+            req.completed = completed
+            next()
+        }
     }
-}
 
 module.exports = {validateActionId, validateAction }
